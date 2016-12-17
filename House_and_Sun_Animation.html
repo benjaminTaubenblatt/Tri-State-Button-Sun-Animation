@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<!--
+	Benjamin Taubenblatt
+	October 12, 2016
+-->
+<head>
+<title>House and Sun</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+</head>
+
+<style type="text/css">
+	#myCanvas{
+		width:400px;
+		height:300px;
+		border:1px solid;
+		padding-left:0;
+		padding-right: 0;
+		display: block;
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		z-index:1;
+	}
+
+	#myButton{
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 2em;
+		display: block;
+	}
+
+	#mySun{
+		width:150px;
+		height:80px;
+		position: absolute;
+		top:30px;
+		left:50px;
+		z-index: 2;
+	}
+
+	#layer1{
+		width:400px;
+		height: 300px;
+		position: relative;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 7em;
+
+	}
+
+
+</style>
+
+<body>
+	<div id="layer1">
+		<canvas id="myCanvas">Your browser does not support the HTML5 canvas tag.</canvas>
+
+			<canvas id="mySun">Your browser does not support the HTML5 canvas tag.</canvas>
+
+	</div>
+	<button id="myButton" type="button" onclick="drawMe()" value="first" >Click Me!</button>
+</body>
+
+<script type="text/javascript">
+
+	var intervalId; //create global variable to clearInterval later
+
+	function drawMe(){
+		if(document.getElementById("myButton").value == "first"){ //draws the house on first click
+
+			var c = document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+
+			ctx.beginPath();
+			ctx.rect(125,75,50,35);
+
+			ctx.moveTo(125,75);
+			ctx.lineTo(150,50);
+			ctx.moveTo(175,75);
+			ctx.lineTo(150,50);
+
+			ctx.closePath(); //close path and draw house
+			ctx.stroke();
+
+			document.getElementById("myButton").setAttribute("value", "second"); //set condition for second button click
+
+
+		}else if(document.getElementById("myButton").value == "second"){ //draws sun on second click
+
+			var b = document.getElementById("mySun");
+			var tx = b.getContext("2d");
+
+			tx.fillStyle = "black"; //colors sun
+
+			tx.beginPath();
+
+			tx.arc(150,80,30,0,2*Math.PI); //center of sun is 150,80 radius is 30
+			tx.lineWidth = 3;
+
+			tx.moveTo(150,50); //top
+			tx.lineTo(150,5);
+
+			tx.moveTo(150,110); //bottom
+			tx.lineTo(150,155);
+
+			tx.moveTo(180,80); //right
+			tx.lineTo(230,80);
+
+			tx.moveTo(120,80); //left
+			tx.lineTo(70,80);
+
+			tx.moveTo(174,62); //top-right
+			tx.lineTo(210,30);
+
+			tx.moveTo(125,62); //top-left
+			tx.lineTo(90,30);
+
+			tx.moveTo(125,98); //bottom-left
+			tx.lineTo(90,130);
+
+			tx.moveTo(174,98); //bottom-right
+			tx.lineTo(210,130);
+
+			tx.closePath();
+			tx.fill(); //fill sun in
+			tx.stroke();
+
+			intervalId = setInterval(animate,400); //start animation
+
+			document.getElementById("myButton").setAttribute("value", "third"); //set condition for third button click
+
+		} else if(document.getElementById("myButton").value == "third"){
+
+			var a = document.getElementById("myCanvas");
+			var x = a.getContext("2d");
+
+			x.clearRect(0,0,myCanvas.width,myCanvas.height); //clears the canvas
+
+			var e = document.getElementById("mySun");
+			var y = e.getContext("2d");
+
+			y.clearRect(0,0,150+mySun.width,80+mySun.height); //clears the canvas
+
+			clearInterval(intervalId); //stops animation
+
+			document.getElementById("myButton").setAttribute("value", "first"); //'reset' button to orig. state
+		}
+	}
+
+	function animate(){ //this function animates our sun
+
+			var d = document.getElementById("mySun"); //locate canvas
+			var t = d.getContext("2d");
+
+			t.clearRect(0,0,150+mySun.width,80+mySun.height); //clears previous drawing
+
+			t.translate(mySun.width/2,mySun.height/2); // now the position (0,0) is found at the center of canvas
+			t.rotate(10*Math.PI/180); // rotate around the start point of our sun
+			t.translate(-mySun.width/2,-mySun.height/2); //switch back to original state to draw
+
+			t.fillStyle = "black"; //colors sun
+
+			t.beginPath();
+
+			t.arc(150,80,30,0,2*Math.PI); //center of sun is 150,80 radius is 30
+			t.lineWidth = 3;
+
+			t.moveTo(150,50); //top
+			t.lineTo(150,5);
+
+			t.moveTo(150,110); //bottom
+			t.lineTo(150,155);
+
+			t.moveTo(180,80); //right
+			t.lineTo(230,80);
+
+			t.moveTo(120,80); //left
+			t.lineTo(70,80);
+
+			t.moveTo(174,62); //top-right
+			t.lineTo(210,30);
+
+			t.moveTo(125,62); //top-left
+			t.lineTo(90,30);
+
+			t.moveTo(125,98); //bottom-left
+			t.lineTo(90,130);
+
+			t.moveTo(174,98); //bottom-right
+			t.lineTo(210,130);
+
+			t.closePath();
+			t.fill();		 //fill sun
+			t.stroke();
+	}
+
+</script>
+</html>
